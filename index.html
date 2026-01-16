@@ -1,0 +1,1463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SSP - Building Smart Digital Solutions</title>
+    <meta name="description" content="Leading IT company SSP providing web development, app development, AI solutions, cloud services, and cybersecurity. Founded by Shaikh Nauman.">
+    <meta name="keywords" content="IT company, web development, app development, AI solutions, cloud services, cybersecurity">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <style>
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
+            color: #e0e0e0;
+            line-height: 1.6;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        /* Typography */
+        h1, h2, h3, h4 {
+            font-weight: 700;
+            color: #ffffff;
+        }
+
+        h1 {
+            font-size: 4rem;
+            background: linear-gradient(45deg, #00d4ff, #8a2be2, #ff6b6b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        h2 {
+            font-size: 2.8rem;
+            margin-bottom: 1rem;
+        }
+
+        h3 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        p {
+            font-size: 1.1rem;
+            color: #b0b0b0;
+        }
+
+        /* Container */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(10, 10, 10, 0.9);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        nav.scrolled {
+            background: rgba(10, 10, 10, 0.95);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 80px;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #00d4ff;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+
+        .nav-links li {
+            margin-left: 2rem;
+        }
+
+        .nav-links a {
+            color: #e0e0e0;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: #00d4ff;
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-content {
+            text-align: center;
+            z-index: 2;
+            position: relative;
+            max-width: 800px;
+        }
+
+        .hero h1 {
+            margin-bottom: 1.5rem;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .hero p {
+            font-size: 1.4rem;
+            margin-bottom: 3rem;
+            animation: fadeInUp 1.2s ease-out;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            animation: fadeInUp 1.4s ease-out;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 18px 35px;
+            background: linear-gradient(45deg, #00d4ff, #8a2be2);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(0, 212, 255, 0.3);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 212, 255, 0.5);
+        }
+
+        .cta-button.secondary {
+            background: transparent;
+            border: 2px solid #00d4ff;
+            color: #00d4ff;
+        }
+
+        .cta-button.secondary:hover {
+            background: #00d4ff;
+            color: white;
+        }
+
+        /* 3D Canvas */
+        #hero-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        /* Sections */
+        section {
+            padding: 120px 0;
+            position: relative;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-title h2 {
+            margin-bottom: 1rem;
+        }
+
+        .section-title p {
+            font-size: 1.2rem;
+            color: #888;
+        }
+
+        /* About Section */
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .about-text h3 {
+            color: #00d4ff;
+            margin-bottom: 1rem;
+        }
+
+        .about-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .stat-card {
+            text-align: center;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 212, 255, 0.2);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #00d4ff;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Services Section */
+        .services {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+
+        .service-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 3rem 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            transform: perspective(1000px) rotateX(0deg);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .service-card:hover {
+            transform: perspective(1000px) rotateX(-5deg) translateY(-15px);
+            box-shadow: 0 30px 60px rgba(0, 212, 255, 0.2);
+        }
+
+        .service-icon {
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+            color: #00d4ff;
+        }
+
+        .service-card h3 {
+            margin-bottom: 1rem;
+        }
+
+        /* Why Choose Us */
+        .why-choose-us {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .why-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 2.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .why-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 212, 255, 0.2);
+        }
+
+        .why-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: #8a2be2;
+        }
+
+        /* Technologies */
+        .tech-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 2rem;
+            justify-items: center;
+        }
+
+        .tech-item {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            width: 100%;
+            max-width: 180px;
+        }
+
+        .tech-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 212, 255, 0.2);
+        }
+
+        .tech-logo {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: #00d4ff;
+        }
+
+        /* Projects */
+        .projects {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 2rem;
+        }
+
+        .project-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .project-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 212, 255, 0.2);
+        }
+
+        .project-image {
+            height: 250px;
+            background: linear-gradient(45deg, #00d4ff, #8a2be2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            color: white;
+        }
+
+        .project-content {
+            padding: 2rem;
+        }
+
+        .project-tags {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .tag {
+            background: rgba(0, 212, 255, 0.2);
+            color: #00d4ff;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        /* Testimonials */
+        .testimonials {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .testimonial-slider {
+            display: flex;
+            transition: transform 0.5s ease;
+        }
+
+        .testimonial-card {
+            min-width: 100%;
+            padding: 3rem;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            margin: 0 2rem;
+        }
+
+        .testimonial-text {
+            font-size: 1.2rem;
+            font-style: italic;
+            margin-bottom: 2rem;
+        }
+
+        .testimonial-author {
+            font-weight: 600;
+            color: #00d4ff;
+        }
+
+        .testimonial-position {
+            color: #888;
+            font-size: 0.9rem;
+        }
+
+        .slider-dots {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 2rem;
+        }
+
+        .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .dot.active {
+            background: #00d4ff;
+        }
+
+        /* Careers */
+        .careers {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 2rem;
+        }
+
+        .job-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 2.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .job-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 212, 255, 0.2);
+        }
+
+        .job-title {
+            color: #00d4ff;
+            margin-bottom: 0.5rem;
+        }
+
+        .job-location {
+            color: #888;
+            margin-bottom: 1rem;
+        }
+
+        .apply-btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background: linear-gradient(45deg, #00d4ff, #8a2be2);
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .apply-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0, 212, 255, 0.3);
+        }
+
+        /* Contact */
+        .contact-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+        }
+
+        .contact-form {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 3rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            color: white;
+            font-size: 1rem;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #00d4ff;
+            box-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
+        }
+
+        .form-textarea {
+            resize: vertical;
+            min-height: 150px;
+        }
+
+        .contact-info {
+            padding: 3rem 0;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .contact-icon {
+            font-size: 1.5rem;
+            color: #00d4ff;
+            margin-right: 1rem;
+            width: 30px;
+        }
+
+        /* AI Chatbot */
+        .chatbot {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(45deg, #00d4ff, #8a2be2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 10px 30px rgba(0, 212, 255, 0.3);
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .chatbot:hover {
+            transform: scale(1.1);
+            box-shadow: 0 15px 40px rgba(0, 212, 255, 0.5);
+        }
+
+        .chatbot-icon {
+            font-size: 1.5rem;
+            color: white;
+        }
+
+        .chat-window {
+            position: fixed;
+            bottom: 90px;
+            right: 20px;
+            width: 350px;
+            height: 500px;
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            display: none;
+            flex-direction: column;
+            z-index: 1000;
+        }
+
+        .chat-header {
+            padding: 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .chat-messages {
+            flex: 1;
+            padding: 1rem;
+            overflow-y: auto;
+        }
+
+        .chat-input {
+            padding: 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .chat-input input {
+            width: 100%;
+            padding: 0.8rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            color: white;
+        }
+
+        .message {
+            margin-bottom: 1rem;
+            padding: 0.8rem;
+            border-radius: 10px;
+            max-width: 80%;
+        }
+
+        .message.user {
+            background: #00d4ff;
+            color: white;
+            margin-left: auto;
+        }
+
+        .message.bot {
+            background: rgba(255, 255, 255, 0.1);
+            color: #e0e0e0;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .nav-links {
+                display: none;
+            }
+            .hero h1 {
+                font-size: 3.5rem;
+            }
+            .hero p {
+                font-size: 1.3rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+            .hero {
+                padding: 0 20px;
+                height: auto;
+                min-height: 100vh;
+            }
+            .hero-content {
+                padding: 100px 0;
+            }
+            section {
+                padding: 80px 0;
+            }
+            .about-content,
+            .contact-content {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+                gap: 1rem;
+            }
+            .cta-button {
+                width: 100%;
+                max-width: 300px;
+            }
+            .services,
+            .why-choose-us,
+            .projects,
+            .careers {
+                grid-template-columns: 1fr;
+            }
+            .testimonial-slider {
+                flex-direction: column;
+            }
+            .testimonial-card {
+                margin: 0;
+                margin-bottom: 2rem;
+                padding: 2rem;
+            }
+            .tech-grid {
+                grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+                gap: 1rem;
+            }
+            .tech-item {
+                padding: 1.5rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            h1 {
+                font-size: 2rem;
+            }
+            h2 {
+                font-size: 2.2rem;
+            }
+            h3 {
+                font-size: 1.6rem;
+            }
+            .hero p {
+                font-size: 1rem;
+            }
+            .hero-content {
+                padding: 80px 0;
+            }
+            section {
+                padding: 60px 0;
+            }
+            .section-title {
+                margin-bottom: 3rem;
+            }
+            .section-title h2 {
+                margin-bottom: 0.5rem;
+            }
+            .section-title p {
+                font-size: 1rem;
+            }
+            .about-stats {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+            .stat-card {
+                padding: 1.5rem;
+            }
+            .stat-number {
+                font-size: 2rem;
+            }
+            .service-card,
+            .why-card,
+            .project-card,
+            .job-card {
+                padding: 2rem 1.5rem;
+            }
+            .service-icon,
+            .why-icon {
+                font-size: 3rem;
+            }
+            .tech-item {
+                padding: 1rem;
+            }
+            .tech-logo {
+                font-size: 2.5rem;
+            }
+            .testimonial-card {
+                padding: 1.5rem;
+            }
+            .testimonial-text {
+                font-size: 1.1rem;
+            }
+            .contact-form,
+            .contact-info {
+                padding: 2rem 1.5rem;
+            }
+            .contact-item {
+                margin-bottom: 1.5rem;
+            }
+            .contact-icon {
+                width: 25px;
+            }
+            .chat-window {
+                width: 90%;
+                height: 400px;
+                right: 5%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 1.8rem;
+            }
+            .hero p {
+                font-size: 0.9rem;
+            }
+            .cta-button {
+                padding: 15px 25px;
+                font-size: 1rem;
+            }
+            .container {
+                padding: 0 15px;
+            }
+            .section-title h2 {
+                font-size: 2rem;
+            }
+            .stat-number {
+                font-size: 1.8rem;
+            }
+            .service-card h3,
+            .why-card h3,
+            .project-card h3,
+            .job-card h3 {
+                font-size: 1.4rem;
+            }
+            .chatbot {
+                width: 50px;
+                height: 50px;
+            }
+            .chatbot-icon {
+                font-size: 1.2rem;
+            }
+        }
+
+        /* Accessibility */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+
+        /* Focus styles */
+        a:focus, button:focus, input:focus, textarea:focus {
+            outline: 2px solid #00d4ff;
+            outline-offset: 2px;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-container">
+            <div class="logo">SSP</div>
+            <ul class="nav-links">
+                <li><a href="#about">About</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#why-choose-us">Why Us</a></li>
+                <li><a href="#technologies">Technologies</a></li>
+                <li><a href="#projects">Projects</a></li>
+                <li><a href="#testimonials">Testimonials</a></li>
+                <li><a href="#careers">Careers</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main>
+        <section class="hero">
+            <canvas id="hero-canvas"></canvas>
+            <div class="hero-content">
+                <h1>Building Smart Digital Solutions</h1>
+                <p>Transforming businesses through innovative technology, cutting-edge development, and AI-powered solutions.</p>
+                <div class="cta-buttons">
+                    <a href="#contact" class="cta-button">Get Started</a>
+                    <a href="#services" class="cta-button secondary">Our Services</a>
+                </div>
+            </div>
+        </section>
+
+        <section id="about">
+            <div class="container">
+                <div class="section-title">
+                    <h2>About Us</h2>
+                    <p>Leading the digital transformation revolution</p>
+                </div>
+                <div class="about-content">
+                    <div class="about-text">
+                        <h3>Our Vision</h3>
+                        <p>At SSP, we envision a world where technology seamlessly integrates with business to create extraordinary experiences. Our mission is to empower organizations with innovative digital solutions that drive growth, efficiency, and competitive advantage.</p>
+                        <p>Founded by Shaikh Nauman, SSP has over a decade of experience in the IT industry, helping hundreds of businesses transform their operations and achieve their digital goals.</p>
+                        <div class="about-stats">
+                            <div class="stat-card">
+                                <div class="stat-number">500+</div>
+                                <p>Projects Completed</p>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-number">50+</div>
+                                <p>Expert Developers</p>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-number">10+</div>
+                                <p>Years Experience</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="about-image">
+                        <div style="height: 400px; background: linear-gradient(45deg, #00d4ff, #8a2be2); border-radius: 20px; display: flex; align-items: center; justify-content: center; font-size: 4rem; color: white;">🚀</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="services">
+            <div class="container">
+                <div class="section-title">
+                    <h2>Our Services</h2>
+                    <p>Comprehensive technology solutions for modern businesses</p>
+                </div>
+                <div class="services">
+                    <div class="service-card">
+                        <div class="service-icon">💻</div>
+                        <h3>Web Development</h3>
+                        <p>Custom web applications built with modern frameworks, responsive design, and optimal performance.</p>
+                    </div>
+                    <div class="service-card">
+                        <div class="service-icon">📱</div>
+                        <h3>App Development</h3>
+                        <p>Native and cross-platform mobile applications for iOS and Android with intuitive user experiences.</p>
+                    </div>
+                    <div class="service-card">
+                        <div class="service-icon">🤖</div>
+                        <h3>AI Solutions</h3>
+                        <p>Machine learning, natural language processing, and AI-powered automation for business intelligence.</p>
+                    </div>
+                    <div class="service-card">
+                        <div class="service-icon">☁️</div>
+                        <h3>Cloud Services</h3>
+                        <p>Scalable cloud infrastructure, migration services, and cloud-native application development.</p>
+                    </div>
+                    <div class="service-card">
+                        <div class="service-icon">🔒</div>
+                        <h3>Cybersecurity</h3>
+                        <p>Comprehensive security solutions, threat detection, and compliance management.</p>
+                    </div>
+                    <div class="service-card">
+                        <div class="service-icon">📊</div>
+                        <h3>Data Analytics</h3>
+                        <p>Business intelligence, data visualization, and predictive analytics for informed decision-making.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="why-choose-us">
+            <div class="container">
+                <div class="section-title">
+                    <h2>Why Choose Us</h2>
+                    <p>What sets us apart from the competition</p>
+                </div>
+                <div class="why-choose-us">
+                    <div class="why-card">
+                        <div class="why-icon">⚡</div>
+                        <h3>Fast Delivery</h3>
+                        <p>Agile development methodology ensures quick turnaround without compromising quality.</p>
+                    </div>
+                    <div class="why-card">
+                        <div class="why-icon">🎯</div>
+                        <h3>Quality Focus</h3>
+                        <p>Rigorous testing and quality assurance processes guarantee reliable, bug-free solutions.</p>
+                    </div>
+                    <div class="why-card">
+                        <div class="why-icon">🤝</div>
+                        <h3>Expert Team</h3>
+                        <p>Highly skilled professionals with years of experience in cutting-edge technologies.</p>
+                    </div>
+                    <div class="why-card">
+                        <div class="why-icon">🔄</div>
+                        <h3>24/7 Support</h3>
+                        <p>Round-the-clock technical support and maintenance for all our solutions.</p>
+                    </div>
+                    <div class="why-card">
+                        <div class="why-icon">💡</div>
+                        <h3>Innovation</h3>
+                        <p>Constantly exploring new technologies to provide the most advanced solutions.</p>
+                    </div>
+                    <div class="why-card">
+                        <div class="why-icon">📈</div>
+                        <h3>Scalability</h3>
+                        <p>Solutions designed to grow with your business and handle increasing demands.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="technologies">
+            <div class="container">
+                <div class="section-title">
+                    <h2>Technologies We Use</h2>
+                    <p>Cutting-edge tools and frameworks for modern development</p>
+                </div>
+                <div class="tech-grid">
+                    <div class="tech-item">
+                        <div class="tech-logo">⚛️</div>
+                        <h4>React</h4>
+                    </div>
+                    <div class="tech-item">
+                        <div class="tech-logo">📱</div>
+                        <h4>React Native</h4>
+                    </div>
+                    <div class="tech-item">
+                        <div class="tech-logo">🟢</div>
+                        <h4>Node.js</h4>
+                    </div>
+                    <div class="tech-item">
+                        <div class="tech-logo">🐍</div>
+                        <h4>Python</h4>
+                    </div>
+                    <div class="tech-item">
+                        <div class="tech-logo">☁️</div>
+                        <h4>AWS</h4>
+                    </div>
+                    <div class="tech-item">
+                        <div class="tech-logo">🐳</div>
+                        <h4>Docker</h4>
+                    </div>
+                    <div class="tech-item">
+                        <div class="tech-logo">🤖</div>
+                        <h4>TensorFlow</h4>
+                    </div>
+                    <div class="tech-item">
+                        <div class="tech-logo">🗄️</div>
+                        <h4>MongoDB</h4>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="projects">
+            <div class="container">
+                <div class="section-title">
+                    <h2>Featured Projects</h2>
+                    <p>Showcasing our expertise through successful implementations</p>
+                </div>
+                <div class="projects">
+                    <div class="project-card">
+                        <div class="project-image">🏥</div>
+                        <div class="project-content">
+                            <div class="project-tags">
+                                <span class="tag">React</span>
+                                <span class="tag">Node.js</span>
+                                <span class="tag">AI</span>
+                            </div>
+                            <h3>Healthcare Management System</h3>
+                            <p>Comprehensive patient management system with AI-powered diagnostics and telemedicine features.</p>
+                        </div>
+                    </div>
+                    <div class="project-card">
+                        <div class="project-image">🏦</div>
+                        <div class="project-content">
+                            <div class="project-tags">
+                                <span class="tag">React Native</span>
+                                <span class="tag">Python</span>
+                                <span class="tag">Blockchain</span>
+                            </div>
+                            <h3>FinTech Mobile App</h3>
+                            <p>Secure mobile banking application with advanced security features and real-time transactions.</p>
+                        </div>
+                    </div>
+                    <div class="project-card">
+                        <div class="project-image">📈</div>
+                        <div class="project-content">
+                            <div class="project-tags">
+                                <span class="tag">Vue.js</span>
+                                <span class="tag">Python</span>
+                                <span class="tag">ML</span>
+                            </div>
+                            <h3>E-commerce Analytics Platform</h3>
+                            <p>Advanced analytics dashboard with machine learning-powered insights and predictive modeling.</p>
+                        </div>
+                    </div>
+                    <div class="project-card">
+                        <div class="project-image">🎓</div>
+                        <div class="project-content">
+                            <div class="project-tags">
+                                <span class="tag">React</span>
+                                <span class="tag">MongoDB</span>
+                                <span class="tag">AWS</span>
+                            </div>
+                            <h3>E-Learning Platform</h3>
+                            <p>Interactive online learning platform with video streaming, quizzes, and progress tracking.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="testimonials">
+            <div class="container">
+                <div class="section-title">
+                    <h2>Client Testimonials</h2>
+                    <p>What our clients say about our services</p>
+                </div>
+                <div class="testimonials">
+                    <div class="testimonial-slider" id="testimonial-slider">
+                        <div class="testimonial-card">
+                            <p class="testimonial-text">"TechNova Solutions transformed our business operations with their innovative AI solutions. The team's expertise and dedication are unmatched."</p>
+                            <p class="testimonial-author">Sarah Johnson</p>
+                            <p class="testimonial-position">CEO, TechCorp Industries</p>
+                        </div>
+                        <div class="testimonial-card">
+                            <p class="testimonial-text">"The web application they built for us exceeded all expectations. Fast, reliable, and beautifully designed. Highly recommended!"</p>
+                            <p class="testimonial-author">Michael Chen</p>
+                            <p class="testimonial-position">CTO, InnovateLabs</p>
+                        </div>
+                        <div class="testimonial-card">
+                            <p class="testimonial-text">"Outstanding mobile app development. Their attention to detail and user experience design is exceptional. Our users love it!"</p>
+                            <p class="testimonial-author">Emily Rodriguez</p>
+                            <p class="testimonial-position">Product Manager, HealthTech Solutions</p>
+                        </div>
+                    </div>
+                    <div class="slider-dots" id="slider-dots">
+                        <div class="dot active" data-slide="0"></div>
+                        <div class="dot" data-slide="1"></div>
+                        <div class="dot" data-slide="2"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="careers">
+            <div class="container">
+                <div class="section-title">
+                    <h2>Join Our Team</h2>
+                    <p>Be part of a team that's shaping the future of technology</p>
+                </div>
+                <div class="careers">
+                    <div class="job-card">
+                        <h3 class="job-title">Senior React Developer</h3>
+                        <p class="job-location">Remote / Full-time</p>
+                        <p>Looking for an experienced React developer to join our frontend team and work on cutting-edge web applications.</p>
+                        <a href="#" class="apply-btn">Apply Now</a>
+                    </div>
+                    <div class="job-card">
+                        <h3 class="job-title">AI/ML Engineer</h3>
+                        <p class="job-location">New York / Full-time</p>
+                        <p>Join our AI team to develop machine learning models and implement AI solutions for enterprise clients.</p>
+                        <a href="#" class="apply-btn">Apply Now</a>
+                    </div>
+                    <div class="job-card">
+                        <h3 class="job-title">DevOps Engineer</h3>
+                        <p class="job-location">San Francisco / Full-time</p>
+                        <p>Manage cloud infrastructure, CI/CD pipelines, and ensure high availability of our applications.</p>
+                        <a href="#" class="apply-btn">Apply Now</a>
+                    </div>
+                    <div class="job-card">
+                        <h3 class="job-title">UI/UX Designer</h3>
+                        <p class="job-location">Remote / Full-time</p>
+                        <p>Create beautiful and intuitive user interfaces for web and mobile applications.</p>
+                        <a href="#" class="apply-btn">Apply Now</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact">
+            <div class="container">
+                <div class="section-title">
+                    <h2>Contact Us</h2>
+                    <p>Let's discuss how we can help transform your business</p>
+                </div>
+                <div class="contact-content">
+                    <form class="contact-form" id="contact-form">
+                        <div class="form-group">
+                            <input type="text" id="name" class="form-input" placeholder="Your Name" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="email" id="email" class="form-input" placeholder="Your Email" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" id="subject" class="form-input" placeholder="Subject" required>
+                        </div>
+                        <div class="form-group">
+                            <textarea id="message" class="form-input form-textarea" placeholder="Your Message" required></textarea>
+                        </div>
+                        <button type="submit" class="cta-button" style="width: 100%;">Send Message</button>
+                    </form>
+                    <div class="contact-info">
+                        <div class="contact-item">
+                            <div class="contact-icon">📧</div>
+                            <div>
+                                <h4>Email</h4>
+                                <p>info@technovasolutions.com</p>
+                            </div>
+                        </div>
+                        <div class="contact-item">
+                            <div class="contact-icon">📞</div>
+                            <div>
+                                <h4>Phone</h4>
+                                <p>+1 (555) 123-4567</p>
+                            </div>
+                        </div>
+                        <div class="contact-item">
+                            <div class="contact-icon">📍</div>
+                            <div>
+                                <h4>Address</h4>
+                                <p>123 Tech Street, Silicon Valley, CA 94043</p>
+                            </div>
+                        </div>
+                        <div class="contact-item">
+                            <div class="contact-icon">🕒</div>
+                            <div>
+                                <h4>Business Hours</h4>
+                                <p>Mon - Fri: 9:00 AM - 6:00 PM</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer style="text-align: center; padding: 40px; background: rgba(255, 255, 255, 0.05); border-top: 1px solid rgba(255, 255, 255, 0.1);">
+        <div class="container">
+            <p>&copy; 2023 TechNova Solutions. All rights reserved.</p>
+            <div style="margin-top: 20px;">
+                <a href="#" style="color: #00d4ff; text-decoration: none; margin: 0 10px;">Privacy Policy</a>
+                <a href="#" style="color: #00d4ff; text-decoration: none; margin: 0 10px;">Terms of Service</a>
+                <a href="#" style="color: #00d4ff; text-decoration: none; margin: 0 10px;">Sitemap</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- AI Chatbot -->
+    <div class="chatbot" id="chatbot">
+        <div class="chatbot-icon">💬</div>
+    </div>
+
+    <div class="chat-window" id="chat-window">
+        <div class="chat-header">
+            <h4>AI Assistant</h4>
+            <button id="close-chat" style="background: none; border: none; color: white; font-size: 1.2rem; cursor: pointer;">×</button>
+        </div>
+        <div class="chat-messages" id="chat-messages">
+            <div class="message bot">Hello! How can I help you today?</div>
+        </div>
+        <div class="chat-input">
+            <input type="text" id="chat-input" placeholder="Type your message..." onkeypress="handleChatKeyPress(event)">
+        </div>
+    </div>
+
+    <script>
+        // Navigation scroll effect
+        window.addEventListener('scroll', () => {
+            const nav = document.querySelector('nav');
+            if (window.scrollY > 100) {
+                nav.classList.add('scrolled');
+            } else {
+                nav.classList.remove('scrolled');
+            }
+        });
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Testimonial slider
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.testimonial-card');
+        const dots = document.querySelectorAll('.dot');
+
+        function showSlide(n) {
+            const slider = document.getElementById('testimonial-slider');
+            slider.style.transform = `translateX(-${n * 100}%)`;
+
+            dots.forEach(dot => dot.classList.remove('active'));
+            dots[n].classList.add('active');
+            currentSlide = n;
+        }
+
+        dots.forEach((dot, index) => {
+            dot.addEventListener('click', () => showSlide(index));
+        });
+
+        // Auto slide testimonials
+        setInterval(() => {
+            currentSlide = (currentSlide + 1) % slides.length;
+            showSlide(currentSlide);
+        }, 5000);
+
+        // Contact form validation
+        const contactForm = document.getElementById('contact-form');
+        contactForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const name = document.getElementById('name').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const subject = document.getElementById('subject').value.trim();
+            const message = document.getElementById('message').value.trim();
+
+            if (name && email && subject && message) {
+                if (validateEmail(email)) {
+                    alert('Thank you for your message! We will get back to you soon.');
+                    contactForm.reset();
+                } else {
+                    alert('Please enter a valid email address.');
+                }
+            } else {
+                alert('Please fill in all fields.');
+            }
+        });
+
+        function validateEmail(email) {
+            const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return re.test(email);
+        }
+
+        // AI Chatbot functionality
+        const chatbot = document.getElementById('chatbot');
+        const chatWindow = document.getElementById('chat-window');
+        const closeChat = document.getElementById('close-chat');
+        const chatMessages = document.getElementById('chat-messages');
+        const chatInput = document.getElementById('chat-input');
+
+        chatbot.addEventListener('click', () => {
+            chatWindow.style.display = chatWindow.style.display === 'flex' ? 'none' : 'flex';
+        });
+
+        closeChat.addEventListener('click', () => {
+            chatWindow.style.display = 'none';
+        });
+
+        function handleChatKeyPress(event) {
+            if (event.key === 'Enter') {
+                const message = chatInput.value.trim();
+                if (message) {
+                    addMessage('user', message);
+                    chatInput.value = '';
+                    setTimeout(() => {
+                        const response = getBotResponse(message);
+                        addMessage('bot', response);
+                    }, 1000);
+                }
+            }
+        }
+
+        function addMessage(type, text) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${type}`;
+            messageDiv.textContent = text;
+            chatMessages.appendChild(messageDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        function getBotResponse(message) {
+            const responses = [
+                "Thank you for your interest! How can I help you learn more about our services?",
+                "I'd be happy to provide more information about our AI solutions. What specific area interests you?",
+                "Our team of experts is ready to discuss your project requirements. Would you like to schedule a consultation?",
+                "We specialize in custom software development. What type of application are you looking to build?",
+                "Security is our top priority. We offer comprehensive cybersecurity solutions for businesses of all sizes.",
+                "Let's discuss how we can help transform your business with cutting-edge technology solutions."
+            ];
+            return responses[Math.floor(Math.random() * responses.length)];
+        }
+
+        // 3D Hero Animation with Three.js
+        let scene, camera, renderer, particles;
+
+        function initThreeJS() {
+            scene = new THREE.Scene();
+            camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('hero-canvas'), alpha: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+
+            // Create particles
+            const particleGeometry = new THREE.BufferGeometry();
+            const particleCount = 1000;
+            const positions = new Float32Array(particleCount * 3);
+
+            for (let i = 0; i < particleCount * 3; i++) {
+                positions[i] = (Math.random() - 0.5) * 20;
+            }
+
+            particleGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+
+            const particleMaterial = new THREE.PointsMaterial({
+                color: 0x00d4ff,
+                size: 0.02,
+                transparent: true,
+                opacity: 0.8
+            });
+
+            particles = new THREE.Points(particleGeometry, particleMaterial);
+            scene.add(particles);
+
+            camera.position.z = 5;
+
+            animate();
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+            particles.rotation.x += 0.001;
+            particles.rotation.y += 0.002;
+            renderer.render(scene, camera);
+        }
+
+        // Initialize Three.js on load
+        window.addEventListener('load', initThreeJS);
+
+        // Resize handler
+        window.addEventListener('resize', () => {
+            if (renderer) {
+                camera.aspect = window.innerWidth / window.innerHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(window.innerWidth, window.innerHeight);
+            }
+        });
+
+        // Intersection Observer for animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Animate elements on scroll
+        document.querySelectorAll('.service-card, .why-card, .tech-item, .project-card, .job-card').forEach(card => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(30px)';
+            card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(card);
+        });
+
+        // Parallax effect for hero
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const rate = scrolled * -0.5;
+            if (particles) {
+                particles.position.y = rate * 0.01;
+            }
+        });
+    </script>
+</body>
+</html>
